@@ -61,9 +61,9 @@ const getAllProducts = async (req: Request, res: Response) => {
 
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
-    const { productId } = req.params;
+    const { id } = req.params;
 
-    const result = await ProductServices.getSingleProductFromDB(productId);
+    const result = await ProductServices.getSingleProductFromDB(id);
 
     res.status(200).json({
       success: true,
@@ -73,7 +73,7 @@ const getSingleProduct = async (req: Request, res: Response) => {
   } catch (err) {
     return res.status(400).json({
       success: false,
-      message: 'Product creation failed',
+      message: 'something went wrong',
       err,
     });
   }

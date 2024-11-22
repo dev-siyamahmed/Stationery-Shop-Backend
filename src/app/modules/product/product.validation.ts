@@ -24,21 +24,15 @@ const ProductValidation = z.object({
     })
     .nonnegative({ message: 'Price must be a positive number' }),
 
-  category: z
-    .string({
+  category: z.enum(
+    ['Writing', 'Office Supplies', 'Art Supplies', 'Educational', 'Technology'],
+    {
       required_error: 'Category is required.',
-    })
-    .refine(
-      (value) =>
-        [
-          'Writing',
-          'Office Supplies',
-          'Art Supplies',
-          'Educational',
-          'Technology',
-        ].includes(value.replace(/([A-Z])/g, ' $1').trim()),
-      { message: 'Invalid category format.' },
-    ), // Enum for category validation
+      invalid_type_error:
+        'Category must be one of: Writing, Office Supplies, Art Supplies, Educational, Technology',
+    },
+  ),
+
   description: z
     .string({
       required_error: 'Description is required.',
@@ -55,7 +49,7 @@ const ProductValidation = z.object({
   inStock: z
     .boolean({
       required_error: 'Stock status is required.',
-      invalid_type_error: 'Stock status must be a boolean.',
+      invalid_type_error: 'Stock status must be a boolean. True Or False ',
     })
     .default(true),
 });

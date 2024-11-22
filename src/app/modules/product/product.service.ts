@@ -11,8 +11,8 @@ const getAllProductsFromDB = async () => {
   return result;
 };
 
-const getSingleProductFromDB = async (id: string) => {
-  const result = await ProductModel.findOne({ id });
+const getSingleProductFromDB = async (_id: string) => {
+  const result = await ProductModel.findOne({ _id });
   return result;
 };
 

@@ -1,16 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { ProductType } from './product.interface';
 
-// Convert ProductCategory enum to an array of its string values
-
-const productCategoryValues: string[] = [
-  'Writing',
-  'Office Supplies',
-  'Art Supplies',
-  'Educational',
-  'Technology',
-];
-
 // Mongoose Schema for Product
 const ProductSchema = new Schema<ProductType>(
   {
@@ -36,7 +26,16 @@ const ProductSchema = new Schema<ProductType>(
     },
     category: {
       type: String,
-      enum: productCategoryValues,
+      enum: {
+        values: [
+          'Writing',
+          'Office Supplies',
+          'Art Supplies',
+          'Educational',
+          'Technology',
+        ],
+        message: '{VALUE} is not a valid Category',
+      },
       required: [true, 'Category is required.'],
     },
     description: {
