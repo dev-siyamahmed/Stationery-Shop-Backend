@@ -53,7 +53,7 @@ const getAllProducts = async (req: Request, res: Response) => {
   } catch (err) {
     return res.status(400).json({
       success: false,
-      message: 'Product creation failed',
+      message: 'something went wrong',
       err,
     });
   }
@@ -61,9 +61,9 @@ const getAllProducts = async (req: Request, res: Response) => {
 
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { productId } = req.params;
 
-    const result = await ProductServices.getSingleProductFromDB(id);
+    const result = await ProductServices.getSingleProductFromDB(productId);
 
     res.status(200).json({
       success: true,
@@ -79,8 +79,81 @@ const getSingleProduct = async (req: Request, res: Response) => {
   }
 };
 
+const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const { price, quantity } = req.body.product;
+
+    const { productId } = req.params;
+
+    const validatedUpdateData = ProductValidation.pick({
+      price: true,
+      quantity: true,
+    }).parse({ price, quantity });
+
+    // Call the service function to update the product
+    const result = await ProductServices.updateProductInFromDB(
+      productId,
+      validatedUpdateData,
+    );
+    res.status(200).json({
+      success: true,
+      message: 'Product updated successfully',
+      data: result, // Send back the updated product
+    });
+  } catch (err: any) {
+    console.error(err);
+    if (err instanceof z.ZodError) {
+      const errors = err.errors.map((e: any) => ({
+        path: e.path.join(' -> '),
+        message: e.message,
+      }));
+      return res.status(400).json({
+        success: false,
+        message: 'Something went wrong',
+        errors,
+      });
+    }
+  }
+};
+
+const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    const { productId } = req.params;
+
+    const result = await ProductServices.deleteProductInFromDB(productId);
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Product not found or already deleted.',
+      });
+    }
+
+    // Respond with success message
+    res.status(200).json({
+      success: true,
+      message: 'Product deleted successfully',
+      data: {},
+    });
+  } catch (err: any) {
+    if (err instanceof z.ZodError) {
+      const errors = err.errors.map((e: any) => ({
+        path: e.path.join(' -> '),
+        message: e.message,
+      }));
+      return res.status(400).json({
+        success: false,
+        message: 'Something went wrong',
+        errors,
+      });
+    }
+  }
+};
+
 export const ProductControllers = {
   createProduct,
   getAllProducts,
   getSingleProduct,
+  updateProduct,
+  deleteProduct,
 };
