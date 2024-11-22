@@ -35,8 +35,8 @@ This project implements a Stationery Shop API using **Express**, **TypeScript**,
 
 
 2. **Directory chnage**
- ```bash
-  cd Stationery-Shop-A2
+```bash
+cd Stationery-Shop-A2
 ```
 
 
