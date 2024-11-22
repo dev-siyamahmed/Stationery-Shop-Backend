@@ -43,18 +43,39 @@ const createProduct = async (req: Request, res: Response) => {
 
 const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const result = await ProductServices.getAllProductsFromDB();
+    const { searchTerm } = req.query;
+
+    // create the search query
+    const searchQuery: any = {};
+
+    if (searchTerm) {
+      const term = String(searchTerm).toLowerCase();
+      const fields = ['name', 'brand', 'category'];
+
+      searchQuery.$or = fields.map((field) => ({
+        [field]: { $regex: term, $options: 'i' },
+      }));
+    }
+
+    // Fetch products from the database using the search query
+    const products = await ProductServices.getAllProductsFromDB(searchQuery);
+
+    if (products.length === 0) {
+      return res.status(404).json({
+        message: 'Products not found',
+        status: false,
+      });
+    }
 
     res.status(200).json({
-      success: true,
       message: 'Products retrieved successfully',
-      data: result,
+      status: true,
+      data: products,
     });
   } catch (err) {
-    return res.status(400).json({
-      success: false,
-      message: 'something went wrong',
-      err,
+    res.status(500).json({
+      message: 'Internal server error',
+      status: false,
     });
   }
 };

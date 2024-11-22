@@ -6,8 +6,8 @@ const createProductIntoDB = async (product: ProductType) => {
   return result;
 };
 
-const getAllProductsFromDB = async () => {
-  const result = await ProductModel.find();
+const getAllProductsFromDB = async (searchQuery: any) => {
+  const result = await ProductModel.find(searchQuery);
   return result;
 };
 
