@@ -1,23 +1,18 @@
-
-export interface ProductCategory {
-  Writing: 'Writing';
-  OfficeSupplies: 'OfficeSupplies';
-  ArtSupplies: 'ArtSupplies';
-  Educational: 'Educational';
-  Technology: 'Technology';
-}
+export type ProductCategory =
+  | 'Writing'
+  | 'Office Supplies'
+  | 'Art Supplies'
+  | 'Educational'
+  | 'Technology';
 
 export interface ProductType {
-  id: string;
   name: string;
   brand: string;
   price: number;
-  category: ProductCategory;
+  category: ProductCategory; // Use the union type here
   description: string;
   quantity: number;
   inStock: boolean;
   createdAt: string;
   updatedAt: string;
 }
-
-

@@ -1,62 +1,66 @@
-import { Schema, model } from "mongoose";
-import { ProductType } from "./product.interface";
+import { Schema, model } from 'mongoose';
+import { ProductType } from './product.interface';
+
+// Convert ProductCategory enum to an array of its string values
+
+const productCategoryValues: string[] = [
+  'Writing',
+  'Office Supplies',
+  'Art Supplies',
+  'Educational',
+  'Technology',
+];
 
 // Mongoose Schema for Product
-const ProductSchema: Schema = new Schema<ProductType>(
+const ProductSchema = new Schema<ProductType>(
   {
     name: {
       type: String,
-      required: [true, "Product name is required."],
+      required: [true, 'Product name is required.'],
       trim: true,
-      minlength: [3, "Product name must be at least 3 characters."],
-      maxlength: [100, "Product name cannot exceed 100 characters."],
+      minlength: [3, 'Product name must be at least 3 characters.'],
+      maxlength: [100, 'Product name cannot exceed 100 characters.'],
     },
     brand: {
       type: String,
-      required: [true, "Brand is required."],
+      required: [true, 'Brand is required.'],
       trim: true,
-      minlength: [2, "Brand name must be at least 2 characters."],
-      maxlength: [50, "Brand name cannot exceed 50 characters."],
+      minlength: [2, 'Brand name must be at least 2 characters.'],
+      maxlength: [50, 'Brand name cannot exceed 50 characters.'],
     },
     price: {
       type: Number,
-      required: [true, "Price is required."],
-      min: [0, "Price cannot be negative."],
-      validate: {
-        validator: (value: number) => Number.isInteger(value),
-        message: "Price must be an integer value.",
-      },
+      default: 0,
+      required: [true, 'Price is required.'],
+      min: [0, 'Price must be a positive number'],
     },
     category: {
       type: String,
-      required: [true, "Category is required."],
+      enum: productCategoryValues,
+      required: [true, 'Category is required.'],
     },
     description: {
       type: String,
-      required: [true, "Description is required."],
+      required: [true, 'Description is required.'],
       trim: true,
-      minlength: [10, "Description must be at least 10 characters."],
-      maxlength: [500, "Description cannot exceed 500 characters."],
+      minlength: [10, 'Description must be at least 10 characters.'],
+      maxlength: [500, 'Description cannot exceed 500 characters.'],
     },
     quantity: {
       type: Number,
-      required: [true, "Quantity is required."],
-      min: [0, "Quantity cannot be less than 0."],
-      validate: {
-        validator: (value: number) => Number.isInteger(value),
-        message: "Quantity must be an integer value.",
-      },
+      required: [true, 'Quantity is required.'],
+      min: [0, 'Quantity cannot be less than 0.'],
     },
     inStock: {
       type: Boolean,
-      required: [true, "Stock status is required."],
+      required: [true, 'Stock status is required.'],
       default: true,
     },
   },
   {
-    timestamps: true, // Automatically add `createdAt` and `updatedAt`
-  }
+    timestamps: true, // Automatically adds createdAt and updatedAt fields
+  },
 );
 
 // Create the Product model
-export const ProductModel = model<ProductType>("Product", ProductSchema);
+export const ProductModel = model<ProductType>('Product', ProductSchema);

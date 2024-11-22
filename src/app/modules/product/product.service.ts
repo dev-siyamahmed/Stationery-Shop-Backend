@@ -1,7 +1,5 @@
-
 import { ProductType } from './product.interface';
 import { ProductModel } from './product.model';
-
 
 const createProductIntoDB = async (product: ProductType) => {
   const result = await ProductModel.create(product);
