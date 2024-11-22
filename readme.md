@@ -36,7 +36,10 @@ The following npm scripts are available for development, building, and running t
    ```bash
    git clone https://github.com/dev-siyamahmed/Stationery-Shop-Backend.git
   ```
-2. **Install dependencies:**
+
+
+2. `Install dependencies`.
+
 ```bash
 npm install
 ```
