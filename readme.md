@@ -38,10 +38,11 @@ The following npm scripts are available for development, building, and running t
   ```
 
 
-2. `Install dependencies`.
+2. `Install dependencies`
 
 ```bash
 npm install
+```
 
 
 3.  ***Set up MongoDB: Ensure that MongoDB is running locally or set up a cloud database (e.g., MongoDB Atlas). Update the database URI in `.env`***
