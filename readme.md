@@ -36,13 +36,11 @@ The following npm scripts are available for development, building, and running t
    ```bash
    git clone https://github.com/dev-siyamahmed/Stationery-Shop-Backend.git
   ```
-
-
-2. `Install dependencies`: Navigate to the project directory and run.
-
-```bash 
- npm install 
+2. **Install dependencies:**
+```bash
+npm install
 ```
+
 
 3.  ***Set up MongoDB: Ensure that MongoDB is running locally or set up a cloud database (e.g., MongoDB Atlas). Update the database URI in `.env`***
 
