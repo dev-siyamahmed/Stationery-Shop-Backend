@@ -38,7 +38,8 @@ The following npm scripts are available for development, building, and running t
   ```
 
 
-3. **Install dependencies: Navigate to the project directory and run:**
+3. **Install dependencies: Navigate to the project directory and run:**:
+ 
  ```bash 
  npm install 
  ```
@@ -89,7 +90,7 @@ npm run prettier:fix
 ```
 
 
-- **`start:prod`**: Runs the application in production mode.
+11. `start:prod`: Runs the application in production mode.
   ```bash
   npm run start:prod
   ```
