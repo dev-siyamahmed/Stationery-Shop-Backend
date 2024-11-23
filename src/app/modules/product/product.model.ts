@@ -57,7 +57,7 @@ const ProductSchema = new Schema<ProductType>(
     },
   },
   {
-    timestamps: true, // Automatically adds createdAt and updatedAt fields
+    timestamps: true, 
   },
 );
 

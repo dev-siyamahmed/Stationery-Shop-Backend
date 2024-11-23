@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { ProductServices } from './product.service';
 import ProductValidation from './product.validation';
 import { ProductType } from './product.interface';
@@ -6,16 +6,16 @@ import { ProductType } from './product.interface';
 const createProduct = async (
   req: Request,
   res: Response,
-  next: NextFunction,
 ) => {
   try {
     const { product: productData } = req.body;
 
-    // product validation useing zod
+    // Validate product data using Zod
     const validationProductData = ProductValidation.parse(
       productData,
     ) as ProductType;
 
+    // Try to save the validated data to DB
     const result = await ProductServices.createProductIntoDB(
       validationProductData,
     );
@@ -25,8 +25,13 @@ const createProduct = async (
       message: 'Product created successfully',
       data: result,
     });
-  } catch (err) {
-    next(err);
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: 'Validation Error',
+      err: err.errors,
+    });
+
   }
 };
 
@@ -89,41 +94,52 @@ const getSingleProduct = async (req: Request, res: Response) => {
   }
 };
 
-const updateProduct = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const updateProduct = async (req: Request, res: Response,) => {
   try {
-    const { price, quantity } = req.body.product;
-
+   
     const { productId } = req.params;
 
     const validatedUpdateData = ProductValidation.pick({
       price: true,
       quantity: true,
-    }).parse({ price, quantity });
+      name: true,
+      brand: true,
+      inStock: true,
+      description: true,
+      category: true,
+    }).parse(req.body.product);
+
 
     // Call the service function to update the product
-    const result = await ProductServices.updateProductInFromDB(
+    const updatedProduct  = await ProductServices.updateProductInFromDB(
       productId,
       validatedUpdateData,
     );
+
+
+    if (!updatedProduct) {
+      return res.status(404).json({
+        status: false,
+        message: 'Product not found',
+      });
+    }
+
+
     res.status(200).json({
       status: true,
       message: 'Product updated successfully',
-      data: result, // Send back the updated product
+      data: updatedProduct , // Send back the updated product
     });
-  } catch (err) {
-    next(err);
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: 'Product updated Feild',
+      error: err.errors,
+    });
   }
 };
 
-const deleteProduct = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const deleteProduct = async (req: Request, res: Response,) => {
   try {
     const { productId } = req.params;
 
@@ -142,8 +158,12 @@ const deleteProduct = async (
       message: 'Product deleted successfully',
       data: {},
     });
-  } catch (err) {
-    next(err);
+  } catch (err: any) {
+    res.status(400).json({
+      success: false,
+      message: 'Product deleted Feild',
+      error: err.errors,
+    });
   }
 };
 
