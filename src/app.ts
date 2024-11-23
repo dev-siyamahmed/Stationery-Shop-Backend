@@ -3,7 +3,6 @@ import express, { Application, Request, Response } from 'express';
 import { ProductRoutes } from './app/modules/product/product.route';
 import { OrderRouters } from './app/modules/order/order.route';
 
-
 const app: Application = express();
 
 //parsers
@@ -14,11 +13,8 @@ app.use(cors());
 app.use('/api', ProductRoutes);
 app.use('/api', OrderRouters);
 
-
-app.get("/", (req: Request, res :Response) => {
-    res.status(200).json({ message: "Welcome to Stationery Shop Server" });
+app.get('/', (req: Request, res: Response) => {
+  res.status(200).json({ message: 'Welcome to Stationery Shop Server' });
 });
-
-
 
 export default app;

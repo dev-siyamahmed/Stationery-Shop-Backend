@@ -3,10 +3,7 @@ import { ProductServices } from './product.service';
 import ProductValidation from './product.validation';
 import { ProductType } from './product.interface';
 
-const createProduct = async (
-  req: Request,
-  res: Response,
-) => {
+const createProduct = async (req: Request, res: Response) => {
   try {
     const { product: productData } = req.body;
 
@@ -31,7 +28,6 @@ const createProduct = async (
       message: 'Validation Error',
       err: err.errors,
     });
-
   }
 };
 
@@ -94,9 +90,8 @@ const getSingleProduct = async (req: Request, res: Response) => {
   }
 };
 
-const updateProduct = async (req: Request, res: Response,) => {
+const updateProduct = async (req: Request, res: Response) => {
   try {
-   
     const { productId } = req.params;
 
     const validatedUpdateData = ProductValidation.pick({
@@ -109,13 +104,11 @@ const updateProduct = async (req: Request, res: Response,) => {
       category: true,
     }).parse(req.body.product);
 
-
     // Call the service function to update the product
-    const updatedProduct  = await ProductServices.updateProductInFromDB(
+    const updatedProduct = await ProductServices.updateProductInFromDB(
       productId,
       validatedUpdateData,
     );
-
 
     if (!updatedProduct) {
       return res.status(404).json({
@@ -124,11 +117,10 @@ const updateProduct = async (req: Request, res: Response,) => {
       });
     }
 
-
     res.status(200).json({
       status: true,
       message: 'Product updated successfully',
-      data: updatedProduct , // Send back the updated product
+      data: updatedProduct, // Send back the updated product
     });
   } catch (err: any) {
     res.status(400).json({
@@ -139,7 +131,7 @@ const updateProduct = async (req: Request, res: Response,) => {
   }
 };
 
-const deleteProduct = async (req: Request, res: Response,) => {
+const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
 

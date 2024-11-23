@@ -3,7 +3,6 @@ import { Types } from 'mongoose';
 import orderValidationSchema from './order.validation';
 import { OrderService } from './order.service';
 
-
 const createOrder = async (req: Request, res: Response) => {
   try {
     const validatedData = orderValidationSchema.parse(req.body);
@@ -13,7 +12,6 @@ const createOrder = async (req: Request, res: Response) => {
       product: new Types.ObjectId(validatedData.product),
     };
 
-    
     // Place the order
     const order = await OrderService.createOrderIntoDB(orderData);
 
@@ -26,16 +24,12 @@ const createOrder = async (req: Request, res: Response) => {
     res.status(500).json({
       message: 'Order created feild',
       status: false,
-      err: err.errors
+      err: err.errors,
     });
   }
 };
 
-
-const getOrderRevenue = async (
-  req: Request,
-  res: Response,
-) => {
+const getOrderRevenue = async (req: Request, res: Response) => {
   try {
     const totalRevenue = await OrderService.getOrderRevenueFromDB();
 
@@ -50,7 +44,7 @@ const getOrderRevenue = async (
     res.status(500).json({
       message: 'Revenue calculated feild',
       status: false,
-      err: err.errors
+      err: err.errors,
     });
   }
 };

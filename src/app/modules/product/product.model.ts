@@ -57,7 +57,7 @@ const ProductSchema = new Schema<ProductType>(
     },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   },
 );
 
