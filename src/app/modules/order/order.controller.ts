@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { Types } from 'mongoose';
 import orderValidationSchema from './order.validation';
 import { OrderService } from './order.service';
 
-const createOrder = async (req: Request, res: Response) => {
+const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const validatedData = orderValidationSchema.parse(req.body);
 
@@ -21,7 +21,7 @@ const createOrder = async (req: Request, res: Response) => {
     // Prepare order data
     const orderData = {
       ...validatedData,
-      product: productObjectId, // Use ObjectId for the product field
+      product: productObjectId,
     };
 
     // Place the order
@@ -33,21 +33,15 @@ const createOrder = async (req: Request, res: Response) => {
       data: order,
     });
   } catch (err) {
-    if (err instanceof Error) {
-      res.status(400).json({
-        message: err.message,
-        status: false,
-      });
-    } else {
-      res.status(500).json({
-        message: 'Internal server error.',
-        status: false,
-      });
-    }
+    next(err);
   }
 };
 
-const getOrderRevenue = async (req: Request, res: Response) => {
+const getOrderRevenue = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const totalRevenue = await OrderService.getOrderRevenueFromDB();
 
@@ -59,10 +53,7 @@ const getOrderRevenue = async (req: Request, res: Response) => {
       },
     });
   } catch (err) {
-    res.status(500).json({
-      message: 'Internal server error.',
-      status: false,
-    });
+    next(err);
   }
 };
 
