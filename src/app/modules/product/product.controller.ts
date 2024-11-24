@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { ProductServices } from './product.service';
 import ProductValidation from './product.validation';
 import { ProductType } from './product.interface';
+import config from '../../config';
 
 const createProduct = async (req: Request, res: Response) => {
   try {
@@ -27,6 +28,7 @@ const createProduct = async (req: Request, res: Response) => {
       success: false,
       message: 'Validation Error',
       err: err.errors,
+      stack: config.node_env === 'development' ? err.stack : undefined,
     });
   }
 };
@@ -75,6 +77,13 @@ const getSingleProduct = async (req: Request, res: Response) => {
     const { productId } = req.params;
 
     const result = await ProductServices.getSingleProductFromDB(productId);
+
+    if (!result) {
+      return res.status(404).json({
+        status: false,
+        message: 'Product not found',
+      });
+    }
 
     res.status(200).json({
       status: true,
@@ -127,6 +136,7 @@ const updateProduct = async (req: Request, res: Response) => {
       success: false,
       message: 'Product updated Feild',
       error: err.errors,
+      stack: config.node_env === 'development' ? err.stack : undefined,
     });
   }
 };
@@ -155,6 +165,7 @@ const deleteProduct = async (req: Request, res: Response) => {
       success: false,
       message: 'Product deleted Feild',
       error: err.errors,
+      stack: config.node_env === 'development' ? err.stack : undefined,
     });
   }
 };

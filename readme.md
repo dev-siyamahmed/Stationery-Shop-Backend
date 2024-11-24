@@ -10,7 +10,7 @@ This project implements a Stationery Shop API using **Express**, **TypeScript**,
 
 1. **CRUD Operations for Stationery Products**:
    - Create, Read, Update, and Delete products.
-   - Data validation for product attributes using Mongoose schema validation.
+   - Data validation for product attributes using Mongoose schema validation and zod uses.
    - Category-based search functionality for filtering products.
 
 2. **Order Management**:

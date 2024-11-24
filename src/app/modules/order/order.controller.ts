@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { Types } from 'mongoose';
 import orderValidationSchema from './order.validation';
 import { OrderService } from './order.service';
+import config from '../../config';
 
 const createOrder = async (req: Request, res: Response) => {
   try {
@@ -25,6 +26,7 @@ const createOrder = async (req: Request, res: Response) => {
       message: 'Order created feild',
       status: false,
       err: err.errors,
+      stack: config.node_env === 'development' ? err.stack : undefined,
     });
   }
 };
