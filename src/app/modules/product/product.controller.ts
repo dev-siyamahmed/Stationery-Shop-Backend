@@ -6,7 +6,7 @@ import config from '../../config';
 
 const createProduct = async (req: Request, res: Response) => {
   try {
-    const { product: productData } = req.body;
+    const productData = req.body;
 
     // Validate product data using Zod
     const validationProductData = ProductValidation.parse(
@@ -103,6 +103,9 @@ const updateProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
 
+    console.log(productId);
+    
+
     const validatedUpdateData = ProductValidation.pick({
       price: true,
       quantity: true,
@@ -111,7 +114,7 @@ const updateProduct = async (req: Request, res: Response) => {
       inStock: true,
       description: true,
       category: true,
-    }).parse(req.body.product);
+    }).parse(req.body);
 
     // Call the service function to update the product
     const updatedProduct = await ProductServices.updateProductInFromDB(
